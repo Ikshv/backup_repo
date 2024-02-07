@@ -114,8 +114,6 @@ class Results:
                 r.simhash_values_LIST.append(Simhash(simhash_value))
         return r
 
-
-
 if __name__ == "__main__":
     r = Results()
     r.add_subdomain("http://www.google.com")

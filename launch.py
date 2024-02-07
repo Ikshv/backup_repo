@@ -1,14 +1,9 @@
-import sys
-import os
-
-from utils.config import Config
 from configparser import ConfigParser
 from argparse import ArgumentParser
-from utils.server_registration import get_cache_server
-from crawler import Crawler
-from utils.pcc_models import Register
 
-ctrl_c_triggered = False
+from utils.server_registration import get_cache_server
+from utils.config import Config
+from crawler import Crawler
 
 # def init(df, user_agent, fresh):
 #     reg = df.read_one(Register, user_agent)
@@ -38,29 +33,13 @@ ctrl_c_triggered = False
 #     return b
 
 def main(config_file, restart):
-    global ctrl_c_triggered
-    try:
-        cparser = ConfigParser() # ConfigParser is a class that is used to read configuration files.
-        cparser.read(config_file) # read() method reads the configuration file and returns a list of sections.
-        config = Config(cparser) # Config is a class that is used to store the configuration settings.
-        config.cache_server = get_cache_server(config, restart) # get_cache_server() method returns the cache server.
-        # Example adjustment in your main script or wherever the download function is called
-        config.cache_server = (config.host, config.port)  # Set this to your actual cache server details
-        print(config.save_file)
-        crawler = Crawler(config, restart) # Crawler is a class that is used to start the crawler.
-        crawler.start() # start() method is used to start the crawler.
-    except KeyboardInterrupt:
-        ctrl_c_triggered = True
-        print(" --Keyboard Interrupt")
-    except Exception as e:
-        print(f"Error: {e}")
-        raise e
-    finally:
-        if ctrl_c_triggered:
-            if 'crawler' in locals() and isinstance(crawler, Crawler):
-                crawler.graceful_shutdown()
-        sys.exit(0)
-
+    cparser = ConfigParser() # ConfigParser is a class that is used to read configuration files.
+    cparser.read(config_file) # read() method reads the configuration file and returns a list of sections.
+    config = Config(cparser) # Config is a class that is used to store the configuration settings.
+    config.cache_server = get_cache_server(config, restart) # get_cache_server() method returns the cache server.
+    crawler = Crawler(config, restart) # Crawler is a class that is used to start the crawler.
+    crawler.start() # start() method is used to start the crawler.
+    
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--restart", action="store_true", default=False)

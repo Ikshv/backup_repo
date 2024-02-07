@@ -12,8 +12,9 @@ class Frontier(object):
         self.logger = get_logger("FRONTIER")
         self.config = config
         self.to_be_downloaded = list()
+
         self.save_file=config.save_file
-        # print("asdkjn",self.config.save_file)
+
         if not os.path.exists(self.save_file+'.db') and not restart:
             # Save file does not exist, but request to load save.
             self.logger.info(
@@ -23,23 +24,14 @@ class Frontier(object):
             # Save file does exists, but request to start from seed.
             self.logger.info(
                 f"Found save file {self.config.save_file}, deleting it.")
-            print("deleting save file")
-            # print(self.save_file)
             os.remove(self.save_file)
-        # Load existing save file, or create one if it does not exist.
-        print("opening save file")
         self.save = shelve.open(self.config.save_file, writeback=True)
-        # print("etc")
         if restart:
             for url in self.config.seed_urls:
-                # print("adding seed urls", url)
                 self.add_url(url)
-            # os.remove(self.save_file)
-            # self.save = shelve.open(self.config.save_file, writeback=True)
         else:
             # Set the frontier state with contents of save file.
             self._parse_save_file()
-            # print("added urls to be downloaded, continuing with frontier")
             if not self.save:
                 for url in self.config.seed_urls:
                     self.add_url(url)
@@ -64,7 +56,6 @@ class Frontier(object):
 
     def add_url(self, url):
         url = normalize(url)
-        # print("adding url", url)
         urlhash = get_urlhash(url)
         if urlhash not in self.save:
             self.save[urlhash] = (url, False)

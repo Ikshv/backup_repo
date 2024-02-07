@@ -14,4 +14,4 @@ class Config(object):
         self.seed_urls = config["CRAWLER"]["SEEDURL"].split(",")
         self.time_delay = float(config["CRAWLER"]["POLITENESS"])
 
-        self.cache_server = (self.host, self.port)
+        self.cache_server = None

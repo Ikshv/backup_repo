@@ -12,9 +12,9 @@ class Crawler(object):
         self.frontier = frontier_factory(config, restart)
         self.workers = list()
         self.worker_factory = worker_factory
-        self.result = Results().read_from_file('results.csv')
-        self.shutdown_request = False
-        self.shutdown_lock = threading.Lock()
+        # self.result = Results().read_from_file('results.csv')
+        # self.shutdown_request = False
+        # self.shutdown_lock = threading.Lock()
 
     def start_async(self):
         self.workers = [
@@ -31,24 +31,24 @@ class Crawler(object):
         for worker in self.workers:
             worker.join()
 
-    def request_shutdown(self):
-        with self.shutdown_lock:
-            self.shutdown_request = True
+    # def request_shutdown(self):
+    #     with self.shutdown_lock:
+    #         self.shutdown_request = True
 
-    def check_shutdown_request(self):
-        with self.shutdown_lock:
-            return self.shutdown_request
+    # def check_shutdown_request(self):
+    #     with self.shutdown_lock:
+    #         return self.shutdown_request
 
-    def graceful_shutdown(self):
+    # def graceful_shutdown(self):
         
-        self.request_shutdown()
-        self.result.write_to_file('results.csv')
-        for worker in self.workers:
-            worker.graceful_shutdown()
+    #     self.request_shutdown()
+    #     self.result.write_to_file('results.csv')
+    #     for worker in self.workers:
+    #         worker.graceful_shutdown()
 
-        self.join()
+    #     self.join()
 
-        self.frontier.save.close()
-        # self.result.save()
-        self.logger.info("Crawler has shutdown gracefully.")
-        sys.exit(0)
+    #     self.frontier.save.close()
+    #     # self.result.save()
+    #     self.logger.info("Crawler has shutdown gracefully.")
+    #     sys.exit(0)

@@ -12,8 +12,8 @@ class Worker(Thread):
         self.config = config
         self.frontier = frontier
         self.result = result
-        self.shutdown_request = False
-        self.shutdown_lock = threading.Lock()
+        # self.shutdown_request = False
+        # self.shutdown_lock = threading.Lock()
         # basic check for requests in scraper
         assert {getsource(scraper).find(req) for req in {"from requests import", "import requests"}} == {-1}, "Do not use requests in scraper.py"
         assert {getsource(scraper).find(req) for req in {"from urllib.request import", "import urllib.request"}} == {-1}, "Do not use urllib.request in scraper.py"
@@ -38,17 +38,17 @@ class Worker(Thread):
             self.frontier.mark_url_complete(tbd_url)
             time.sleep(self.config.time_delay)
 
-    def request_shutdown(self):
-        with self.shutdown_lock:
-            self.shutdown_request = True
+    # def request_shutdown(self):
+    #     with self.shutdown_lock:
+    #         self.shutdown_request = True
 
-    def check_shutdown_request(self):
-        with self.shutdown_lock:
-            return self.shutdown_request
+    # def check_shutdown_request(self):
+    #     with self.shutdown_lock:
+    #         return self.shutdown_request
         
-    def graceful_shutdown(self):
-        self.result.write_to_file('results.csv')
-        self.request_shutdown()
-        self.join()
-        self.logger.info(f"Worker-{self.ident} has shutdown gracefully.")
-        return
+    # def graceful_shutdown(self):
+    #     self.result.write_to_file('results.csv')
+    #     self.request_shutdown()
+    #     self.join()
+    #     self.logger.info(f"Worker-{self.ident} has shutdown gracefully.")
+    #     return

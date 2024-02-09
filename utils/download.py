@@ -1,6 +1,5 @@
 import requests
 import cbor
-import time
 
 from utils.response import Response
 
@@ -18,7 +17,6 @@ def download(url, config, logger=None):
     try:
         if resp and resp.content:
             a = Response(cbor.loads(resp.content))
-            # print(a)
             return a
     except (EOFError, ValueError) as e:
         pass

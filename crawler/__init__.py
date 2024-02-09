@@ -30,25 +30,3 @@ class Crawler(object):
     def join(self):
         for worker in self.workers:
             worker.join()
-
-    # def request_shutdown(self):
-    #     with self.shutdown_lock:
-    #         self.shutdown_request = True
-
-    # def check_shutdown_request(self):
-    #     with self.shutdown_lock:
-    #         return self.shutdown_request
-
-    # def graceful_shutdown(self):
-        
-    #     self.request_shutdown()
-    #     self.result.write_to_file('results.csv')
-    #     for worker in self.workers:
-    #         worker.graceful_shutdown()
-
-    #     self.join()
-
-    #     self.frontier.save.close()
-    #     # self.result.save()
-    #     self.logger.info("Crawler has shutdown gracefully.")
-    #     sys.exit(0)

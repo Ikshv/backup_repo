@@ -69,10 +69,13 @@ def extract_data(text):
     return [token.lower() for token in tokens if token.isalnum()]
 
 
-# def calculate_html_text_ratio(html_content):
-#     soup = BeautifulSoup(html_content, 'html.parser')
-#     text = soup.get_text(separator=' ', strip=True)
-#     return len(text) / len(html_content)
+def calculate_text_to_html_ratio(content):
+    soup = BeautifulSoup(content, 'html.parser')
+    text = soup.get_text(separator=' ', strip=True)
+    html_length = len(content)
+    text_length = len(text)
+    if html_length == 0: return 0  # Avoid division by zero
+    return text_length / html_length
 
 def is_calendar_url(url):
     patterns = [
